@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sistema de Electoral personero</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/alertify.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <section class="container" id="opciones-iniciales">
+    <div class="row">
+      <div class="col-lg-12 my-5">
+        <img src="img/logo-mundo.jpg" width="10%" class="mx-auto d-block" alt="">
+        <h1 class="text-center">Sistema de Electoral personero</h1>
+        <h5 class="text-center">Colegio Mundo de Ilusiones</h5>
+      </div>
+      <div class="col-lg-6 ops-init" id="div-votar">
+        <a href="#1" id="votar">
+          <img src="img/vote-button-md.png" class="mx-auto d-block p-5" alt="votar" width="50%">
+        </a>
+        <h4 class="text-center">Votar</h4>
+      </div>
+      <div class="col-lg-6 ops-init" id="ver-resultados">
+        <a href="#2" id="resultados">
+          <img src="img/icono-resultados.svg" class="mx-auto d-block p-5" alt="resultados" width="50%">
+        </a>
+        <h4 class="text-center">Ver resultados</h4>
+      </div>
+    </div>
+  </section>
+  <section id="logo-fe-alegria">
+    <img src="img/logo-fe.gif" class="mx-auto d-block" alt="">
+  </section>
+  <section class="container" id="candidatos-sec">
+    <div class="col-md-4 itemfieldset">
+      <b>Años académicos:</b> <select class="FormElement ui-widget-content ui-corner-all" name="cmbedAcademicYear" id="cmbedAcademicYear" onchange="ReloadGrade(this.value);"><option value="">- Seleccione -</option><option value="23" data="AÑOA-CERR">2022</option><option value="20" data="AÑOA-CERR">2021</option><option value="18" data="AÑOA-CERR">2020</option><option value="16" data="AÑOA-CERR">2019</option><option value="15" data="AÑOA-CERR">2018</option><option value="14" data="AÑOA-CERR">2017</option><option value="12" data="AÑOA-CERR">2016</option><option value="9" data="AÑOA-CERR">2015</option><option value="8" data="AÑOA-CERR">2014</option><option value="7" data="AÑOA-CERR">2013</option><option value="6" data="AÑOA-CERR">2012</option><option value="5" data="AÑOA-CERR">2011</option><option value="4" data="AÑOA-CERR">2010</option><option value="3" data="AÑOA-CERR">2009</option><option value="2" data="AÑOA-CERR">2008</option><option value="1" data="AÑOA-CERR">2007</option></select>
+    </div>
+    <h4 class="text-center my-5">Selecciona tu candidato favorito</h4>
+    <div class="d-flex justify-content-center">
+      <div class="p-1">
+        <img src="img/candidatos/candidato-1.png" class="candidato-op" alt="1" width="100%" id="cand-1">
+        <h4 class="nombreyapellidos text-center">Erik julio</h4>
+        <h4 class="nombreyapellidos text-center">11-A</h4>
+        <h4 class="nombreyapellidos text-center"># 1</h4>
+      </div>
+      <div class="p-1">
+        <img src="img/candidatos/candidato-2.png" class="candidato-op" alt="2" width="100%" id="cand-2">
+        <h4 class="nombreyapellidos text-center">Luisa Ferrer</h4>
+        <h4 class="nombreyapellidos text-center">11-A</h4>
+        <h4 class="nombreyapellidos text-center"># 4</h4>
+      </div>
+      <div class="p-1">
+        <img src="img/candidatos/candidato-3.png" class="candidato-op" alt="3" width="100%" id="cand-3">
+        <h4 class="nombreyapellidos text-center">Maria Perez</h4>
+        <h4 class="nombreyapellidos text-center">11-A</h4>
+        <h4 class="nombreyapellidos text-center"># 3</h4>
+      </div>
+      <div class="p-1">
+        <img src="img/candidatos/candidato-4.png" class="candidato-op" alt="4" width="100%" id="cand-4">
+        <h4 class="nombreyapellidos text-center">Pello Torrez</h4>
+        <h4 class="nombreyapellidos text-center">11-A</h4>
+        <h4 class="nombreyapellidos text-center"># 4</h4>
+      </div>
+      <div class="p-1">
+        <img src="img/candidatos/candidato-5.png" class="candidato-op" alt="5" width="100%" id="cand-5">
+        <h4 class="nombreyapellidos text-center">Laura Roncon</h4>
+        <h4 class="nombreyapellidos text-center">11-A</h4>
+        <h4 class="nombreyapellidos text-center"># 5</h4>
+      </div>
+      <div class="p-1">
+        <img src="img/candidatos/candidato-6.png" class="candidato-op" alt="6" width="100%" id="cand-6">
+        <h4 class="nombreyapellidos text-center">Voto en Blanco</h4>
+      </div>
+    </div>
+  </section>
+  <section class="container" id="resultados-sec">
+    <h2 class="text-center">Resultados</h2>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="img/candidatos/candidato-1.png" width="80%" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary" id="candidat-1"></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="img/candidatos/candidato-2.png" width="80%" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary" id="candidat-2"></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="img/candidatos/candidato-3.png" width="80%" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary" id="candidat-3"></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="img/candidatos/candidato-4.png" width="80%" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary" id="candidat-4"></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="img/candidatos/candidato-5.png" width="80%" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary" id="candidat-5"></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="img/candidatos/candidato-6.png" width="80%" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Voto en Blanco</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary" id="candidat-6"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/jQuery.js" charset="utf-8"></script>
+  <script src="js/popper.min.js" charset="utf-8"></script>
+  <script src="js/bootstrap.min.js" charset="utf-8"></script>
+  <script src="js/alertify.min.js" charset="utf-8"></script>
+  <script src="js/script.js" charset="utf-8"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sistema de Electoral personero</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/alertify.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="css/style.bundle.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+  <section class="container" id="opciones-iniciales"><br><br>
+    <div class="row">
+      <div class="col-sm-8 itemfieldset" >
+        <b>Años académicos:</b> <select class="FormElement ui-widget-content ui-corner-all" name="cmbedAcademicYear" id="cmbedAcademicYear" onchange="ReloadGrade(this.value);"><option value="">- Seleccione -</option><option value="23" data="AÑOA-CERR">2022</option><option value="20" data="AÑOA-CERR">2021</option><option value="18" data="AÑOA-CERR">2020</option><option value="16" data="AÑOA-CERR">2019</option><option value="15" data="AÑOA-CERR">2018</option><option value="14" data="AÑOA-CERR">2017</option><option value="12" data="AÑOA-CERR">2016</option><option value="9" data="AÑOA-CERR">2015</option><option value="8" data="AÑOA-CERR">2014</option><option value="7" data="AÑOA-CERR">2013</option><option value="6" data="AÑOA-CERR">2012</option><option value="5" data="AÑOA-CERR">2011</option><option value="4" data="AÑOA-CERR">2010</option><option value="3" data="AÑOA-CERR">2009</option><option value="2" data="AÑOA-CERR">2008</option><option value="1" data="AÑOA-CERR">2007</option></select>
+      </div>
+      <div class="input-group col-sm-4">
+        <span class="input-group-text" id="basic-addon1">Delegado</span>
+        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+      </div>
+    </div>
+    <div class="row">
+          <h4 class="text-center my-5">Candidatos Seleccionados</h4>
+          <div class="d-flex justify-content-center">
+            <div class="p-1">
+              <img src="img/candidatos/1645462872854.jpg" style="border-radius: 1500px;border: 5px solid white;" class="candidato-op" alt="1" width="100%" >
+              <h4 class="nombreyapellidos text-center">Erik julio</h4>
+              <h4 class="nombreyapellidos text-center">11-A</h4>
+              
+            </div>
+            <div class="p-1">
+              <img src="img/candidatos/candidato-2.png" class="candidato-op" alt="2" width="100%" id="cand-2">
+                    <!--https://www.codeply.com/go/uGJOpHUd8L/file-input-->
+              <h4 class="nombreyapellidos text-center">Luisa Ferrer</h4>
+              <h4 class="nombreyapellidos text-center">11-A</h4>
+              
+            </div>
+            <div class="p-1">
+              <img src="img/candidatos/candidato-3.png" class="candidato-op" alt="3" width="100%" id="cand-3">
+              <h4 class="nombreyapellidos text-center">Gianella Lastra</h4>
+              <h4 class="nombreyapellidos text-center">11-A</h4>
+              
+            </div>
+            <div class="p-1">
+              <img src="img/candidatos/candidato-4.png" class="candidato-op" alt="4" width="100%" id="cand-4">
+              <h4 class="nombreyapellidos text-center">Pello Torrez</h4>
+              <h4 class="nombreyapellidos text-center">11-A</h4>
+              <!-- Button trigger modal -->
+              <button type="button" class="btnes float-right" data-toggle="modal" data-target="#exampleModalLong"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                Editar
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Información del Candidato</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--photo-->
+                        
+                        
+                        <!--comenzar::Entrada de imagen-->
+                        <div class="image-input image-input-circle" data-kt-image-input="true"
+                          style="background-image: url(img/candidatos/avatar.svg)">
+                          <!--begin::Envoltorio de vista previa de imagen-->
+                          <div class="image-input-wrapper w-125px h-125px" style="background-image: url(img/candidatos/21118312.jpg)">
+                          </div>
+                          <!--end::Image preview wrapper-->
+                        
+                          <!--begin::Edit button-->
+                          <label class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+                            data-kt-image-input-action="change" data-bs-toggle="tooltip" data-bs-dismiss="click" title="Change avatar">
+                            <i class="bi bi-pencil-fill fs-7"></i>
+                        
+                            <!--begin::Inputs-->
+                            <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+                            <input type="hidden" name="avatar_remove" />
+                            <!--end::Inputs-->
+                          </label>
+                          <!--end::Edit button-->
+                        
+                          <!--begin::Cancel button-->
+                          <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+                            data-kt-image-input-action="cancel" data-bs-toggle="tooltip" data-bs-dismiss="click" title="Cancel avatar">
+                            <i class="bi bi-x fs-2"></i>
+                          </span>
+                          <!--end::Cancel button-->
+                        
+                          <!--begin::Remove button-->
+                          <span class="btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body shadow"
+                            data-kt-image-input-action="remove" data-bs-toggle="tooltip" data-bs-dismiss="click" title="Remove avatar">
+                            <i class="bi bi-x fs-2"></i>
+                          </span>
+                          <!--end::Remove button-->
+                        </div>
+                        <!--end::Image input-->
+
+                      <h4 class="nombreyapellidos text-center">Laura Roncon</h4>
+                      <h4 class="nombreyapellidos text-center">11-A</h4>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!---->
+            </div>
+            <div class="p-1">
+              <img src="img/candidatos/candidato-5.png" class="candidato-op" alt="5" width="100%" id="cand-5">
+              <h4 class="nombreyapellidos text-center">Laura Roncon</h4>
+              <h4 class="nombreyapellidos text-center">11-A</h4>
+              <!-- Button trigger modal -->
+                <button type="button" class="btnes float-right" data-toggle="modal" data-target="#exampleModalLong"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  Editar
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Información del Candidato</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <!--photo-->
+                        <div class="profile-pic-div">
+                          <img src="img/candidatos/avatar.svg" id="photo">
+                          <input type="file" id="file">
+                          <label for="file" id="uploadBtn">Choose Photo</label>
+                        </div>
+                        <h4 class="nombreyapellidos text-center">Laura Roncon</h4>
+                        <h4 class="nombreyapellidos text-center">11-A</h4>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!---->
+            </div>
+          </div>
+    </div>
+    <br><br><br>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <!--<button class="btn btn-outline-dark" type="button">Votar</button>&nbsp;&nbsp;-->
+      <button class="btn btn-outline-success" type="button">Guardar</button>
+    </div>
+  </section>
+  <script src="js/jQuery.js" charset="utf-8"></script>
+  <script src="js/popper.min.js" charset="utf-8"></script>
+  <script src="js/bootstrap.min.js" charset="utf-8"></script>
+  <script src="js/alertify.min.js" charset="utf-8"></script>
+  <script src="js/script.js" charset="utf-8"></script>
+  <script src="js/scripts.bundle.js"></script>
+  
+</body>
+</html>

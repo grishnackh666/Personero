@@ -1,0 +1,245 @@
+// -----------------------------------------------------------------------------
+// javascript Site Diamonds
+// -----------------------------------------------------------------------------
+
+$(document).ready(function () {
+
+	/*Cargar Notificaciones*/
+	CargarNotificaciones(0);
+
+});
+
+/* CargarNotificaciones */
+function CargarNotificaciones(inicio){
+	var ini = inicio + 1;
+	var fin = inicio + 10;
+	var ids = '';
+
+	if($("#idsRegistration").val() != undefined){
+		ids = $("#idsRegistration").val();
+	}
+
+	//Se bloquea content
+	$('#contentNotifications').block({ message: '<svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>' });
+
+	//Se consulta notificaciones
+	$.ajax({type:"GET",
+		url:'../tools/acciones.php?op=9&inicio=' + ini +'&fin=' + fin +'&ids='+ids,
+		traditional:true,
+		success:function(data){
+
+			//Se desbloquea content
+			$('#contentNotifications').unblock();
+
+			//Se agregan al dom notificaciones
+			$("#contentNotifications").append(data);
+
+			//Se actualiza cantidad de Notificaciones
+			$("#contNotifications").text($(".generalnotif").length);
+
+			verOptionNotificaciones();
+		}
+	});
+
+}
+
+/* verOptionNotificaciones */
+function verOptionNotificaciones(){
+	//Se muestra el curso si hay varios alumnos
+	if($("#idsRegistration").val() != undefined){
+		if($("#idsRegistration").val().indexOf(",") == -1)
+			$(".gradeNoti").hide();
+		else
+			$(".gradeNoti").show();
+	}
+
+	//Se muestra heartbitNotifications si hay notificaciones no Leidas
+	if($(".generalnotifnoleidas").length > 0){
+		$('#heartbitNotifications').show();
+	}
+	else {
+		$('#heartbitNotifications').hide();
+	}
+
+	//Se calcula el tiempo transcurrido de la notificación
+	$.each($(".generalnotif"), function(idx, item){
+		$(item).find(".time").text(moment($(item).attr("dtcreation")).fromNow());
+	});
+}
+
+/* CargarMasNotificaciones */
+function CargarMasNotificaciones(){
+	var cantidadactual = $(".generalnotif").length;
+
+	CargarNotificaciones(cantidadactual);
+}
+
+/* LeiNotificacion */
+function LeiNotificacion(idNotification, obj){
+
+	if($(obj).hasClass("generalnotifnoleidas")){
+		$.ajax({type:"POST",
+			url:'../tools/acciones.php?op=10',
+			traditional:true,
+			data:{idNotification : idNotification},
+			success:function(data){
+				var result = JSON.parse(data);
+				if(result.success){
+					$(obj).removeClass("generalnotifnoleidas");
+
+					verOptionNotificaciones();
+				}
+			}
+		});
+	}
+
+	return false;
+}
+
+/* ClaseOnline tipo = PROFE, ALUMNO */
+function ClaseOnline(idroom, tipo, titulo, nombre){
+	var domain = "meet.jit.si";
+	$('#jitsi-container').html('');
+
+	var configNew = {};
+	var interfaceConfigNew = {};
+
+	if(tipo == "PROFE"){
+		configNew = {
+			defaultLanguage : "es",
+			startWithAudioMuted : true,
+			disableDeepLinking : true,
+			enableClosePage : true,
+			disableLocalVideoFlip : true,
+			remoteVideoMenu: {
+	    // // Si se establece en verdadero, el botón 'Expulsar' estará deshabilitado.
+	    	disableKick: false
+	    },
+	    // Si se establece en verdadero, todas las operaciones de silenciamiento de los participantes remotos se deshabilitarán.
+	    disableRemoteMute: false,
+			disableInviteFunctions: true,
+			disableAudioLevels: true
+		}
+
+		interfaceConfigNew = {
+			SHOW_JITSI_WATERMARK : false,
+			SHOW_WATERMARK_FOR_GUESTS : false,
+			APP_NAME : "Diamante",
+			NATIVE_APP_NAME : "Diamante",
+			PROVIDER_NAME : "Diamante",
+			AUTO_PIN_LATEST_SCREEN_SHARE: false,
+			SHOW_CHROME_EXTENSION_BANNER: false,
+			TOOLBAR_BUTTONS: [
+        'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+        'fodeviceselection', 'hangup', 'profile', 'recording',
+        'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
+        'videoquality', 'filmstrip', 'feedback', 'stats', 'shortcuts',
+        'tileview', 'mute-everyone',
+        'e2ee', 'security'
+    	],//, 'invite', 'download', 'help', 'videobackgroundblur', 'chat'
+	    SETTINGS_SECTIONS: ['devices', 'language', 'moderator', 'profile', 'calendar']
+			//'remote-only',
+			//filmStripOnly: true
+			//FILM_STRIP_MAX_HEIGHT=320
+			//VERTICAL_FILMSTRIP : false,
+		}
+	}
+
+	if(tipo == "ALUMNO"){
+		configNew = {
+			defaultLanguage : "es",
+			startWithAudioMuted : true,
+			disableDeepLinking : true,
+			enableClosePage : true,
+			disableLocalVideoFlip : true,
+			remoteVideoMenu: {
+	    // // Si se establece en verdadero, el botón 'Expulsar' estará deshabilitado.
+	    	disableKick: true
+	    },
+	    // Si se establece en verdadero, todas las operaciones de silenciamiento de los participantes remotos se deshabilitarán.
+	    disableRemoteMute: true,
+			disableInviteFunctions: true,
+			disableAudioLevels: true
+		}
+
+		interfaceConfigNew = {
+			SHOW_JITSI_WATERMARK : false,
+			SHOW_WATERMARK_FOR_GUESTS : false,
+			APP_NAME : "Diamante",
+			NATIVE_APP_NAME : "Diamante",
+			PROVIDER_NAME : "Diamante",
+			AUTO_PIN_LATEST_SCREEN_SHARE: false,
+			SHOW_CHROME_EXTENSION_BANNER: false,
+			TOOLBAR_BUTTONS: [
+	        'microphone', 'camera', 'hangup',
+					'stats', 'raisehand', 'fullscreen',
+					'tileview', 'feedback', 'closedcaptions'
+	    ],
+	    SETTINGS_SECTIONS: []
+			//'remote-only',
+			//filmStripOnly: true
+			//FILM_STRIP_MAX_HEIGHT=320
+			//VERTICAL_FILMSTRIP : false,
+		}
+	}
+
+	var options = {
+			"roomName" : idroom,
+			"parentNode" : document.querySelector('#jitsi-container'),
+			"width" : '100%',
+			"height" : $("#ModalPreview").height(),
+			configOverwrite : configNew,
+			interfaceConfigOverwrite : interfaceConfigNew
+	};
+
+	api = new JitsiMeetExternalAPI(domain, options);
+
+	/*Ingreso Participantes*/
+	api.on('participantJoined', (object) => participantjoin(object));
+	/*Salida Participantes*/
+	if(tipo == "ALUMNO")
+		api.on('participantLeft', (object) => participantleft(object));
+
+	/*Ingreso Participante*/
+	api.on('videoConferenceJoined', (object) => videoConferenceJoined(object));
+	/*Salio Participante*/
+	api.on('videoConferenceLeft', (object) => videoConferenceLeft(object));
+
+	//api.on(JitsiMeetJS.events.conference.USER_JOINED, onUserJoined);
+
+	//api.on('participantJoined', (object) => join(object.id));
+	api.executeCommand('displayName', nombre);
+	api.executeCommand('subject', titulo);
+	/*api.executeCommand('toggleTileView');
+	api.executeCommand('toggleVideo');
+	api.executeCommand('toggleFilmStrip');
+	api.executeCommand('password', 'The Password');*/
+}
+
+function videoConferenceJoined(object){
+	/*Aqui se registra asistencia*/
+	//console.log('videoConferenceJoined : ');
+	//console.log(object);
+	//$(".preloader").hide();
+}
+function videoConferenceLeft (object){
+	//console.log('videoConferenceLeft : ');
+	//console.log(object);
+	/*Se cierra Modal*/
+	cerrarModalFullScreen();
+}
+
+function participantjoin(object){
+	/*Evento de Join All participante*/
+	//console.log('user join with display name : ');//+user.getDisplayName()
+	//console.log(object);
+	//console.log(user);
+}
+
+function participantleft(object){
+	/*Evento de Left All participante*/
+	//console.log('user left with display name : ');//+user.getDisplayName()
+	//console.log(object);
+	//console.log(user);
+	FinalizarClase();
+}

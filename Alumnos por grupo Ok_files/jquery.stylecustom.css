@@ -1,0 +1,249 @@
+.ui-jqdialog-content td.navButton { display:none; }
+
+tr.jqgrow>td.textDiv {
+	overflow: auto !important;
+	height:100%;
+	white-space:normal !important;
+}
+
+.ui-datepicker-trigger{
+  cursor:pointer;
+  border:none;
+  background:none;
+  padding: 0px;
+}
+
+.ui-datepicker{
+  z-index: 1051 !important;
+}
+
+.EditTable td input,
+.EditTable td select,
+.EditTable td textarea {
+	width: 90% !important;
+}
+
+.EditTable td input:not([type="checkbox"]),
+.EditTable td select:not([multiple="multiple"]),
+.EditTable td textarea {
+  height: 33px;
+}
+
+.FormGrid tbody tr td:last-child {
+    text-align: left;
+}
+
+.ui-jqgrid {
+	font-size: 0.9rem !important;
+}
+
+.ui-jqdialog .modal-content{
+	font-size: 0.9rem !important;
+  overflow: visible !important;
+}
+
+.ui-jqdialog-content .FormGrid {
+  overflow:auto !important;
+}
+
+.ui-jqgrid .ui-jqgrid-bdiv{
+  overflow-x: hidden !important;
+}
+
+.CaptionTD label{overflow-wrap: break-word; word-wrap: break-word; white-space: normal;}
+
+.FormData .DataTD {
+  padding-bottom: 10px !important;
+}
+
+.FormData .DataTD label {
+  margin-bottom: 2px !important;
+}
+
+.tdGridNotas{
+  text-align: left;
+  padding-right:0px !important;
+  padding: 3px 0px !important;
+  border: 0px !important;
+}
+
+.tdGridNotas textarea, .textDiv textarea{
+  width: 100% !important;
+}
+
+.labelGridNotas{
+  font-weight: 600;
+  padding: 5px 3px !important;
+  margin-bottom: 0px !important;
+}
+
+.legenExpandCollapse{
+  cursor: pointer;;
+}
+
+.expanded{
+  height: auto;
+  -webkit-transition: 0.2s ease-in;
+  -o-transition: 0.2s ease-in;
+  transition: 0.2s ease-in;
+}
+
+.collapsed{
+  height: 24px;
+  overflow: hidden;
+  -webkit-transition: 0.2s ease-in;
+  -o-transition: 0.2s ease-in;
+  transition: 0.2s ease-in;
+}
+
+.GridAlumnosPagerCenter .ui-pager-control td[id*='_center'] {
+  top: 25px;
+  left: -10px;
+  position: absolute;
+}
+
+.GridAlumnosPagerCenter .ui-pager-control td[id*='_right'] {
+  position: absolute;
+  left: calc(100% - 180px);
+}
+
+.heightGridPagerFixed .ui-jqgrid-pager,
+.heightGridPagerFixed .ui-jqgrid-toppager{
+  height: 38px !important;
+}
+
+.ui-dialog {
+  z-index: 1000 !important ;
+}
+
+.jqgrow td{
+  padding: 0.4rem!important;
+}
+
+.divSelect{
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.btnsAchievement{
+  color: white;
+}
+
+.modal-mobile{
+  top: 40% !important;
+  width: 60% !important;
+  max-width: 60% !important;
+}
+
+.modal-mobile-small{
+  top: 45% !important;
+  width: 40% !important;
+  max-width: 40% !important;
+}
+
+.modal-mobile .modal-body{
+  height: 395px !important;
+  padding: 0px;
+  margin: 0px;
+}
+
+.modal-mobile-small .modal-body{
+  max-height: 435px !important
+  padding: 10px;
+  margin: 10px;
+  overflow-y: auto;
+}
+
+.modal-btnclose{
+  font-size: 1.5rem !important;
+  margin: -1rem -1rem -1rem auto !important;
+}
+
+.btn-custom{
+  color: #fff !important;
+  background-color: #17a2b8 !important;
+  border-color: #17a2b8 !important;
+}
+
+.DataTDInline{
+  display: flex;
+  width: 100%;
+}
+
+.input-group{
+	flex-wrap: unset !important;
+}
+
+/*---------------------------------------------------------------*/
+@media (min-width: 320px) and (max-width: 480px) {
+  .EditTable td input,
+  .EditTable td select,
+  .EditTable td textarea {
+    width: 92% !important;
+  }
+
+  .EditTable td input:not([type="checkbox"]),
+  .EditTable td select:not([multiple="multiple"]),
+  .EditTable td textarea {
+    height: 33px;
+  }
+
+  .ui-jqdialog .modal-content{
+  	width: 315px !important;
+    font-size: 0.9rem !important;
+    overflow: visible !important;
+  }
+
+  .ui-jqgrid .ui-paging-pager td{
+  	padding: 0 2px !important;
+  }
+
+  .ui-jqgrid .ui-pg-input, .ui-jqgrid .ui-jqgrid-toppager .ui-pg-input{
+  	width: 50px !important;
+  }
+
+  .ui-jqgrid-toppager, .ui-jqgrid-pager {
+  	height: 70px !important;
+  }
+
+  .subgrid-data .ui-jqgrid-toppager,
+  .subgrid-data .ui-jqgrid-pager,
+  .heightGridPagerCustom .ui-jqgrid-pager,
+  .heightGridPagerCustom .ui-jqgrid-toppager{
+    height: auto !important;
+  }
+
+  .subgrid-data{
+    overflow: auto;
+  }
+
+  .ui-jqgrid-toppager .ui-pg-button span {
+  	font-size: 20px;
+  }
+
+  .ui-pager-control td[id*='_right'] {
+    position: absolute;
+    left: calc(100% - 180px);
+  }
+
+  .ui-pager-control td[id*='_center'] {
+    top: 30px;
+    left: 0px;
+    position: absolute;
+  }
+
+  .modal-mobile, .modal-mobile-small{
+    top: 48% !important;
+    width: 90% !important;
+    max-width: 90% !important;
+  }
+
+  .modal-mobile .modal-body{
+    height: 420px !important;
+  }
+
+  .modal-mobile-small .modal-body {
+    padding: 0px;
+    margin: 8px;
+  }
+}

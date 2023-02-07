@@ -1,0 +1,59 @@
+﻿html, body{
+	margin:0;
+	padding:0;
+	width:100%;
+	zoom:0 !important;
+	font-size:1rem !important;
+	background-color:white;
+	font-family:'Source Sans Pro', sans-serif;
+}
+
+fieldset, legend{
+	font-size:1rem !important;
+}
+
+.content-encabezadoReporte, fieldset{
+	width: 100% !important;
+}
+
+#encabezadoReporte{
+	display:block !important;
+	margin-bottom:30px !important;
+}
+
+#header, #subheader, #contentmenu, #footer, .titulo, #btnVerReporte,
+.ui-jqgrid-pager, .header, .left-sidebar, .dropdownmenu, .footer, .ui-jqgrid-titlebar, .fa, .octicon{
+	display:none !important;
+}
+
+.ui-jqgrid-bdiv{
+	overflow:visible !important;
+}
+
+.ui-jqgrid{
+	margin-top:20px !important;
+	width: 100% !important;
+}
+
+.page-wrapper{
+	margin-left: 0px !important;
+}
+
+.verActividades{
+	margin: 0;
+	padding: 0;
+	border-style: none;
+}
+
+.classfont1{
+	font-size: 2.3rem;
+}
+.classfont2{
+	font-size: 1.2rem;
+}
+.classfont3{
+	font-size: 0.9rem;
+}
+.jqgrow td, .ui-jqgrid .ui-jqgrid-htable thead th div{
+	white-space: normal !important;
+}

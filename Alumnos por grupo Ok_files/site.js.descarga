@@ -1,0 +1,752 @@
+// -----------------------------------------------------------------------------
+// javascript Site Diamonds
+// -----------------------------------------------------------------------------
+var formElementGrid;
+var idformElementGrid;
+var htmlValor = '';
+var functionAction = null;
+const formatterPeso = new Intl.NumberFormat('es-CO', {
+       style: 'currency',
+       currency: 'COP',
+       minimumFractionDigits: 0
+     });
+
+$(document).ready(function () {
+
+	function InIEvent() {
+
+		$(function ($){
+			if($.datepicker != undefined){
+				$.datepicker.regional['es'] = {
+					closeText: 'Cerrar',
+					prevText: '<Ant',
+					nextText: 'Sig>',
+					currentText: 'Hoy',
+					monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+					monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+					dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+					dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+					dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+					weekHeader: 'Sm',
+					dateFormat: 'dd-MM-yy',
+					isRTL: false,
+					showMonthAfterYear: false,
+					yearSuffix: '',
+					changeMonth: true,
+					changeYear: true,
+					showWeek: true,
+					firstDay: 1,
+					yearRange: '-50:+0',
+					maxDate: 'now'
+				};
+
+				$.datepicker.setDefaults($.datepicker.regional['es']);
+			}
+		});
+
+		$('select.selectpicker').selectpicker();
+	}
+
+	//Inicializar los calendario
+	InIEvent();
+
+	//Para ver el preview de las imagenes
+	if (typeof $("a[rel^='prettyPhoto']").prettyPhoto == 'function') {
+		$("a[rel^='prettyPhoto']").prettyPhoto();
+	}
+
+	/* Inicio de Reescribre el metodo de validación de campos */
+	var originalCheckValues = $.jgrid.checkValues;
+
+	$.jgrid.checkValues = function(val, valref,g, customobject, nam) {
+		if(val == null) val = "";
+		var ret = originalCheckValues.call(this,val, valref,g, customobject, nam);
+
+		if (!ret[0] && ret[1] != "") {
+			$("#"+valref).focus();
+			$("#"+valref).effect("highlight", {color:"#eeeeee"}, 2000);
+
+			ret[1] = ret[1].replace("<br/>", " ");
+
+			$("#"+valref).attr("title", ret[1].replace("<b>", "").replace("</b>", ""));
+			$("#"+valref).blur(function() {
+				if($(this).val() != "")
+				{
+					$(this).attr("title", "");
+					$("#FormError").hide();
+				}
+			});
+
+			$("#"+valref).tooltip({
+			  position: {
+				my: "center bottom-20",
+				at: "center top",
+				using: function( position, feedback ) {
+				  $( this ).css( position );
+				  $( "<div>" )
+					.addClass( "arrow" )
+					.addClass( feedback.vertical )
+					.addClass( feedback.horizontal )
+					.appendTo( this );
+				}
+			  }
+			});
+		}
+
+		return ret;
+	};
+	/* Fin de Reescribre el metodo de validación de campos */
+
+	/*Inicio legen Expand Collapse*/
+	$(".legenExpandCollapse").append(' <i class="fa fa-arrow-circle-up"></i>');
+	$(".legenExpandCollapse").click(function(){
+		if($(".contentfieldset").hasClass("collapsedes"))
+		{
+			$(this).find('.fa').attr('class','fa fa-arrow-circle-up');
+			$(".contentfieldset").slideDown();
+			$(".contentfieldset").addClass("expandedes");
+			$(".contentfieldset").removeClass("collapsedes");
+		}
+		else{
+			$(this).find('.fa').attr('class','fa fa-arrow-circle-down');
+			$(".contentfieldset").slideUp();
+			$(".contentfieldset").addClass("collapsedes");
+			$(".contentfieldset").removeClass("expandedes");
+		}
+	});
+	/*Fin legen Expand Collapse*/
+
+	/*Inicio Form Contacto Interno*/
+	var form=$('#main-contact-intern-form');
+	form.submit(function(event){
+		event.preventDefault();
+		var form_status=$('<div class="form_status"></div>');
+		$.ajax({
+			type:"POST",
+			url:$(this).attr('action'),
+			data:form.serialize(),
+			beforeSend:function(){
+				form.prepend(form_status.html('<p><i class="fa fa-spinner fa-spin"></i> Se está enviando el Correo Electrónico...</p>').fadeIn());
+			}
+		})
+		.done(function(data){
+			form_status.html('<p class="text-success">Gracias por ponerse en contacto con nosotros. Lo más pronto posible nos pondremos en contacto con usted</p>').delay(3000).fadeOut();
+			form[0].reset();
+		});
+	});
+	/*Fin Form Contacto Interno*/
+});
+
+function CentrarVentana(form, strid)
+{
+	//Se organiza en una fila el form si tiene mas de 20 campos el form
+	if(isMobile()){
+		organizarFormEnUnaFila(form);
+	}
+
+	if(strid == 'viewmod'){
+		idformElementGrid = form[0].getAttribute('id').replace('ViewGrid_',strid);
+	}
+	else{
+		idformElementGrid = form[0].id.replace('FrmGrid_', strid);
+	}
+
+	var dlgDiv = $("#"+idformElementGrid);
+
+	form.css({'max-height': 0.70*screen.height+'px'});
+
+	var x = 0;
+	var y = 0;
+
+	if(!isMobile()){
+		if (self == top){
+			x = screen.width/2 - parseInt(dlgDiv.width()/2);
+			y = screen.height/2 - parseInt(dlgDiv.height()/2) - 70;
+
+			if(dlgDiv.height() < 0){
+				y = 4;
+			}
+		}
+		else{
+			x = self.innerWidth/2 - parseInt(dlgDiv.width()/2);
+			y = self.innerHeight/2 - parseInt(dlgDiv.height()/2) - 70;
+
+			if(y < 0){
+				y = 4;
+			}
+		}
+	}
+	else{
+			x = screen.width/2 - parseInt(dlgDiv.width()/2);
+			y = screen.height/2 - parseInt(dlgDiv.height()/2) - 30;
+
+			if(dlgDiv.height() < 0){
+				y = 4;
+			}
+	}
+
+	dlgDiv.css({'top': y +'px'});
+	dlgDiv.css({'left': x +'px'});
+}
+
+/* Inicio Centrar Modal de Formulario que tiene dentro un tinymce */
+
+function myCustomInitInstance(inst) {
+	tinymce.dom.Event.bind(inst.getWin(), 'resize', function(e) {
+		// Do your thing here :-)
+		CentrarVentana(formElementGrid, 'editmod');
+	});
+}
+
+/* Fin Centrar Modal de Formulario que tiene dentro un tinymce */
+
+/* Inicio Función que verifica si un texto contiene @Parametro */
+/* Para identificar cuando debe abrir la ventana de remplazar parametros */
+
+function CheckParam(valor){
+	var val = valor.indexOf("@")+1;
+	for (index = val; index < valor.length; ++index) {
+		var code = valor.charCodeAt(index);
+		if (((code >= 65) && (code <= 90)) || ((code >= 97) && (code <= 122))) {
+			// it is a letter
+			val = val + 1;
+		}
+		else{
+			break;
+		}
+	}
+	return valor.substring(valor.indexOf("@"),val);
+}
+
+/* Fin Función que verifica si un texto contiene @Parametro */
+
+/* Inicio Función que abre la ventana que reemplaza @Parametro por valor digitado */
+
+function CambiarParametros(valor, tipo, idobj){
+	if(valor != '' && valor != null){
+		if(valor.indexOf("@") > -1){
+			var param = CheckParam(valor);
+			$.msgbox("<p>Escribe valor del parametro</p>", {
+				type    : "prompt",
+				inputs  : [
+				  {type: "text", label: param, required: true}
+				],
+				buttons : [
+				  {type: "submit", value: "Aceptar"},
+				  {type: "cancel", value: "Cancelar"}
+				]
+			}, function(result) {
+				if(result){
+					valor = valor.replace(param,"");
+					htmlValor = htmlValor.replace(param,result);
+					CambiarParametros(valor, tipo, idobj);
+				}
+				else{
+					valor = valor.replace(param,"");
+					CambiarParametros(valor, tipo, idobj);
+				}
+			});
+		}
+		else{
+			if(tipo == 1){
+				$(idobj).val(htmlValor);
+				$(idobj).focus();
+			}
+
+			if(tipo == 2){
+				tinymce.get(idobj).setContent(htmlValor);
+				tinymce.get(idobj).focus();
+			}
+
+			if(tipo == 3){
+				window.frames['iframeReporte'].document.getElementById('contentReporte').innerHTML = htmlValor;
+				window.frames['iframeReporte'].print();
+			}
+			return;
+		}
+	}
+}
+
+/* Fin Función que abre la ventana que reemplaza @Parametro por valor digitado */
+
+/* Inicio Función custom JQuery que construye un menu con iconos en los items */
+
+$(function() {
+	if($.ui != undefined){
+		$.widget( "custom.iconselectmenu", $.ui.selectmenu, {
+		  _renderItem: function( ul, item ) {
+			var li = $( "<li>", { text: item.label } );
+
+			if ( item.disabled ) {
+			  li.addClass( "ui-state-disabled" );
+			}
+
+			if(item.element.attr( "data-class" )!=""){
+				$( "<span>", {
+				  style: item.element.attr( "data-style" ),
+				  "class": "ui-icon " + item.element.attr( "data-class" )
+				}).appendTo( li );
+			}
+
+			return li.appendTo( ul );
+		  }
+		});
+	}
+});
+
+/* Fin Función custom JQuery que construye un menu con iconos en los items */
+
+/* Inicio de Función que quita los espacios al inicio y final de una cadena. */
+
+String.prototype.trim = function () {
+	return this.replace(/^\s+/,'').replace(/\s+$/,'');
+};
+
+/* Fin de Función que quita los espacios al inicio y final de una cadena. */
+
+/* Inicio de Función que Capitaliza la primera letra de cada párrafo y las que van después de punto. */
+
+String.prototype.capitalizeParagraph = function() {
+	var res = "";
+	var paragraphs = this.value.toString().split(".");
+	for(var i = 0; i < paragraphs.length ; i++) {
+		var temp = paragraphs[i].trim();
+		res += ". " + temp.charAt(0).toUpperCase() + temp.slice(1).toLowerCase();
+	}
+	return res.slice(2);
+};
+
+function CapitalizarText(id){
+	$("#" + id).val($("#" + id).val().capitalizeParagraph);
+}
+
+/* Fin de Función que Capitaliza la primera letra de cada párrafo y las que van después de punto. */
+
+/* Inicio Función que compara Tecla con un patrón dado, a excepción del Enter, Retroceso y Escape. */
+
+function expRegular(e, patron){
+	var tecla = (document.all) ? e.keyCode : e.which;
+	if(tecla == 8 || tecla == 13 || tecla == 27){
+		return true;
+	}
+	var te = String.fromCharCode(tecla);
+	return patron.test(te);
+}
+
+/* Fin Función que compara Tecla con un patrón dado, a excepción del Enter, Retroceso y Escape. */
+
+/* Inicio Selecciona la unica sola posible selección de los combos. */
+
+function SelectionCombos(idform){
+	$(((idform == '' || idform == undefined)? '': '#' + idform + ' ') + 'select').each(function( index, element ) {
+		// element == this
+		if($(element).find('option').length == 2){
+			$(element).find('option')[1].selected = 'selected';
+			$(element).change();
+		}
+	});
+}
+
+/* Fin Selecciona la unica sola posible selección de los combos. */
+
+/* Inicio Setup Tooltipster */
+
+if($.tooltipster != undefined){
+	$('.tooltip').tooltipster({
+	   animation: 'fade',
+	   delay: 200,
+	   theme: 'tooltipster-punk',
+	   trigger: 'click'
+	});
+}
+
+/* Fin Setup Tooltipster */
+
+/* Inicio Function IsMobile */
+isMobile = function() {
+	// device detection
+	var isMobile = false;
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+	    // is mobile..
+	    isMobile = true;
+	}
+	return isMobile;
+};
+/* Fin  Function IsMobile */
+
+/* Inicio Function isTablet */
+isTablet = function() {
+	var isTablet = false;
+	const userAgent = navigator.userAgent.toLowerCase();
+	isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+	return isTablet;
+};
+/* Fin  Function isTablet */
+
+/* Inicio  Function Anchoform */
+function Anchoform(ancho){
+	try {
+		var winwidth = $(window).width()-10,
+		parentwidth = ancho,
+		ww = 0;
+		if( parentwidth > winwidth ) {
+			ww = winwidth;
+		} else {
+			ww = parentwidth;
+		}
+		return ww;
+	} catch(e){}
+}
+/* Fin  Function Anchoform */
+
+/* Inicio organizarColumnas
+	Se organizan las columnas visualmente innecesarias para el responsive  */
+function organizarColumnas(table, colshow, idlist){
+	if(colshow == undefined)
+		colshow = '';
+	if(idlist == undefined)
+		idlist = "list";
+
+	if(isMobile()){
+		//Se ocultan columnas
+		ocultaColumnasGrid(table, colshow, idlist);
+	}
+
+	//Se ajusta el ancho
+	$("#" + idlist).jqGrid('resizeGrid', 0);
+}
+/* Fin organizarColumnas*/
+
+/* Inicio ocultaColumnasGrid se ocultan columnas de un Grid*/
+function ocultaColumnasGrid(table, colshow, idlist){
+	var arrCol = $("#" + idlist).jqGrid('getGridParam', 'colModel');
+	var cd = "cd" + table;
+	var ds = "ds" + table;
+
+	$.each(arrCol, function(indx, item){
+		if(cd != item.name && ds != item.name && "idStatus" != item.name &&  'rn' != item.name && 'check' != item.name && colshow.indexOf(item.name)==-1)
+			$("#" + idlist).jqGrid('hideCol', item.name);
+	});
+}
+/* Fin ocultaColumnasGrid*/
+
+/* Inicio EnabledDisabledHideBottomsGrid */
+function EnabledDisabledHideBottomsGrid(gidname, enabled, aovigente)
+{
+	grid = $("#"+gidname);
+    gid = $.jgrid.jqID(grid[0].id);
+
+	var $tdadd = $('#add_' + gid);
+	var $tdedit = $('#edit_' + gid);
+	var $tdview = $('#view_' + gid);
+	var $tddel = $('#del_' + gid);
+	var $tdsearch = $('#search_' + gid);
+	var $tdrefresh = $('#refresh_' + gid);
+	var $tdmatri = $('#editmatricula_' + gid);
+	var $tdacudi = $('#editacudiente_' + gid);
+
+	if(enabled)
+	{
+		if(aovigente || aovigente == undefined){
+			$tdadd.parent().removeClass('ui-state-disabled');
+			$tdedit.parent().removeClass('ui-state-disabled');
+			$tddel.parent().removeClass('ui-state-disabled');
+			$tdmatri.parent().removeClass('ui-state-disabled');
+			$tdacudi.parent().removeClass('ui-state-disabled');
+		}
+		else{
+			$tdadd.parent().addClass('ui-state-disabled');
+			$tdedit.parent().addClass('ui-state-disabled');
+			$tddel.parent().addClass('ui-state-disabled');
+			$tdmatri.parent().addClass('ui-state-disabled');
+			$tdacudi.parent().addClass('ui-state-disabled');
+		}
+
+		$tdview.parent().removeClass('ui-state-disabled');
+		$tdsearch.parent().removeClass('ui-state-disabled');
+		$tdrefresh.parent().removeClass('ui-state-disabled');
+	}
+	else
+	{
+		$tdadd.parent().addClass('ui-state-disabled');
+		$tdedit.parent().addClass('ui-state-disabled');
+		$tddel.parent().addClass('ui-state-disabled');
+		$tdmatri.parent().addClass('ui-state-disabled');
+		$tdacudi.parent().addClass('ui-state-disabled');
+		$tdview.parent().addClass('ui-state-disabled');
+		$tdsearch.parent().addClass('ui-state-disabled');
+		$tdrefresh.parent().addClass('ui-state-disabled');
+	}
+}
+/* Fin EnabledDisabledHideBottomsGrid*/
+
+/* Inicio organizarFormEnUnaFila*/
+function organizarFormEnUnaFila(el){
+	$.each($(el).find(".FormData"), function(ix, item){
+		if($(item).children().length == 2){
+			var td = $(item).find("td:first").html();
+			$(item).find("td:first").remove();
+			$(item).find("td:first").prepend(td+'<br/>');
+			$(item).find("td:first").attr("colspan", "2");
+		}
+	});
+}
+/* Fin organizarFormEnUnaFila*/
+
+/* Inicio resize*/
+$(window).bind('resize', function() {
+	if (typeof onresize == 'function') {
+	    onresize();
+	}
+}).trigger('resize');
+/* Fin resize*/
+
+/* Inicio setDefaultValuesFormAdd*/
+function setDefaultValuesFormAdd(){
+	if($("#idCountryExpedition").length > 0){
+		$("#idCountryExpedition").val(42);
+		$("#idCountryExpedition").change();
+	}
+}
+/* Fin setDefaultValuesFormAdd*/
+
+/* Inicio ObtenerHora*/
+function ObtenerHora(){
+	var momentoActual = new Date();
+	var hours = momentoActual.getHours();
+	var minutes = momentoActual.getMinutes();
+	var ampm = hours >= 12 ? 'PM' : 'AM';
+
+	hora = momentoActual.getHours();
+	minuto = momentoActual.getMinutes();
+	segundo = momentoActual.getSeconds();
+
+	hours = hours % 12;
+	hours = hours ? hours : 12; // the hour '0' should be '12'
+
+	if(hours.toString().length == 1)
+		hours = '0'+hours;
+	if(minuto.toString().length == 1)
+		minuto = '0'+minuto;
+	if(segundo.toString().length == 1)
+		segundo = '0'+segundo;
+
+	horaImprimible = hours + ":" + minuto + " " + ampm;
+
+	return horaImprimible;
+}
+/* Fin ObtenerHora*/
+
+/* Inicio SetupDateTimePicker*/
+function SetupDateTimePicker(obj, format){
+	var val = obj.value;
+	if(val != "")
+		$(obj).attr("value", val);
+	var idobj = $(obj)[0].id;
+	var isTimer = (format == 'LT' || format == 'hh:mm A');
+	var icon = (isTimer? 'fa fa-clock-o' : 'fa fa-calendar');
+
+	var newhtml = "<div class='form-group'><div class='input-group date' id='datetimepicker" + idobj + "'>" + obj.parentNode.innerHTML + "<span class='input-group-addon'><span class='" + icon + "'></span></span></div></div>";
+
+	$(obj).parent().html(newhtml);
+	$("#" + idobj).val(val);
+
+	if($('#datetimepicker' + idobj).data("DateTimePicker") != undefined)
+		$('#datetimepicker' + idobj).data("DateTimePicker").destroy();
+
+	$('#datetimepicker' + idobj).datetimepicker({
+		locale: 'es',
+		format: format,
+		extraFormats: [format],
+		//maxDate: (isTimer? false: 'now'),
+		allowInputToggle : true,
+		showTodayButton: !isTimer,
+		showClear: true,
+		showClose: true,
+		calendarWeeks: true
+	});
+
+	$('#datetimepicker' + idobj).bind('dp.show', function () {
+    if($('.FormGrid').length > 0){
+      if($('.FormGrid')[0].clientHeight < 523){
+        $('.FormGrid').css('cssText', 'width: auto; height: auto; max-height: 523px; overflow-y: scroll !important;');
+        //$('.FormGrid').css('cssText', 'width: auto; height: auto; max-height: 523px; overflow: unset !important;');
+      }
+    }
+    if($('.modal-body').length > 0){
+      if($('.modal-body')[0].clientHeight  < 523){
+        //$('.modal-body').css('cssText', 'width: auto; height: auto; max-height: 523px; overflow: unset !important;');
+        $('.modal-body').css('cssText', 'width: auto; height: auto; max-height: 523px; overflow-y: scroll !important;');
+      }
+    }
+	});
+}
+/* Fin SetupDateTimePicker*/
+
+/* Inicio Procesar*/
+function Procesar(url, type, data, fnsuccess){
+	$.ajax({
+			url: url,
+			type: type,
+			data: data,
+			success: function( data, textStatus, jqXHR ){ // Trigger when request was successful
+				try
+				{
+					var result = jQuery.parseJSON(jqXHR.responseText);
+					if(result.success)
+					{
+						if(fnsuccess == null || fnsuccess == undefined){
+								$.msgbox(result.message, {type: "info", buttons : [{type: "submit", value: "Aceptar"}]});
+						}
+						else {
+							fnsuccess(result);
+						}
+					}
+					else
+					{
+						var msg = result.message.replace("[Microsoft][SQL Server Native Client 11.0][SQL Server]", "");
+						var type = "error";
+						if(msg.indexOf('Se venció la sesión') != -1){
+							functionAction = function(result) { location.reload(); };
+							type = "info";
+							msg = "<b>Información</b><br/>Se venció la sesión";
+						}
+						else{
+							functionAction = function(result) {};
+						}
+						$.msgbox(msg, {type: type, buttons : [{type: "submit", value: "Aceptar"}]}, functionAction);
+					}
+				}
+				catch(err){
+					$.msgbox(err.message, {type: "error", buttons : [{type: "submit", value: "Aceptar"}]});
+				}
+			},
+			error: function(request, error, errormessage) { // Show error
+				$.msgbox(error + '<br/>' + errormessage, {type: "error", buttons : [{type: "submit", value: "Aceptar"}]});
+			}
+		});
+}
+/* Fin Procesar Con Archivos */
+
+/* Inicio Procesar*/
+function ProcesarConArchivo(url, type, data, fnsuccess){
+	$.blockUI({ baseZ: 9999999 });
+	$.ajax({
+			url: url,
+			dataType: 'text',
+			cache: false,
+			contentType: false,
+			processData: false,
+			type: type,
+			data: data,
+			success: function( data, textStatus, jqXHR ){ // Trigger when request was successful
+				try
+				{
+					$.unblockUI();
+					var result = jQuery.parseJSON(jqXHR.responseText);
+					if(result.success)
+					{
+						if(fnsuccess == null || fnsuccess == undefined){
+								$.msgbox(result.message, {type: "info", buttons : [{type: "submit", value: "Aceptar"}]});
+						}
+						else {
+							fnsuccess(result);
+						}
+					}
+					else
+					{
+						var msg = result.message.replace("[Microsoft][SQL Server Native Client 11.0][SQL Server]", "");
+						var type = "error";
+						if(msg.indexOf('Se venció la sesión') != -1){
+							functionAction = function(result) { location.reload(); };
+							type = "info";
+							msg = "<b>Información</b><br/>Se venció la sesión";
+						}
+						else{
+							functionAction = function(result) {};
+						}
+						$.msgbox(msg, {type: type, buttons : [{type: "submit", value: "Aceptar"}]}, functionAction);
+					}
+				}
+				catch(err){
+					$.unblockUI();
+					$.msgbox(err.message, {type: "error", buttons : [{type: "submit", value: "Aceptar"}]});
+				}
+			},
+			error: function(request, error, errormessage) { // Show error
+				$.unblockUI();
+				$.msgbox(error + '<br/>' + errormessage, {type: "error", buttons : [{type: "submit", value: "Aceptar"}]});
+			}
+		});
+}
+/* Fin Procesar Con Archivos*/
+
+/* Inicio validarTamanoExtension*/
+function validarTamanoExtension(e){
+    var isOk = false;
+    var maxSize= 500 * 1024;//500 Kb default
+
+    $('input[type=file]').each(function(){
+        if(typeof this.files[0] !== 'undefined'){
+            if($(this).attr("max-size") != ""){
+              maxSize = parseInt($(this).attr("max-size")) * 1024;;
+            }
+            isOk = this.files[0].size <= maxSize;
+            if(!isOk){
+                $.msgbox("<div class='msgbox-title'>Atención!</div><br/>Verifique el tamaño del archivo, solo se permiten archivos hasta de "+$(this).attr("max-size")+" Kb.", {type:"alert", buttons : [{type: "submit", value: "Aceptar"}]});
+                this.value = '';
+            }
+            return isOk;
+        }
+    });
+
+    if(isOk && e.value != ""){
+      var ext = e.value.match(/\.([^\.]+)$/)[1];
+      if(e.accept.indexOf(ext) == -1){
+        $.msgbox("<div class='msgbox-title'>Atención!</div><br/>Tipo archivo no permitido, solo se permiten Imagen(jpg,png), Documentos(pdf,doc,docx).", {type:"alert", buttons : [{type: "submit", value: "Aceptar"}]});
+        e.value = '';
+        isOk = false;
+      }
+    }
+
+    return isOk;
+}
+/* Fin validarTamanoExtension*/
+
+/* Inicio addZero*/
+function addZero(i) {
+    if (i.toString().length == 1) {
+        i = '0' + i;
+    }
+    return i;
+}
+/* Fin addZero*/
+
+/* Inicio successfunc */
+function successfunc(response){
+		var obj = null;
+
+		try{
+				var obj = jQuery.parseJSON(response.responseText);
+		}
+		catch(err) {
+				$.msgbox("<div class='msgbox-title'>Error</div>"+err.message, {type:"error", buttons : [{type: "submit", value: "Aceptar"}]});
+				$.unblockUI();
+				return[false, err.message];
+		}
+
+		if(obj != null){
+				if(obj.success){
+						$.growlUI(obj.message, '');
+						return[true, ''];
+				}
+				else{
+						$.msgbox("<div class='msgbox-title'>Error</div>"+obj.message, {type:"error", buttons : [{type: "submit", value: "Aceptar"}]});
+						$.unblockUI();
+						return[false, obj.message];
+				}
+		}
+
+		return[true, ''];
+}
+/* Fin successfunc */
